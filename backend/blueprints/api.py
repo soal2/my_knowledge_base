@@ -32,6 +32,40 @@ api_bp = Blueprint('api', __name__)
 
 
 # =============================================================================
+# Health Check Endpoint
+# =============================================================================
+
+@api_bp.route('/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint for Docker and monitoring systems.
+    
+    Returns:
+        200: Service is healthy
+        500: Service has issues
+    """
+    try:
+        # Check database connection
+        db.session.execute('SELECT 1')
+        
+        return success_response(
+            data={
+                'status': 'healthy',
+                'timestamp': datetime.utcnow().isoformat(),
+                'service': 'knowledge-base-backend',
+                'version': '1.0.0'
+            },
+            message='Service is healthy'
+        )
+    except Exception as e:
+        return error_response(
+            message=f'Health check failed: {str(e)}',
+            status_code=500,
+            errors={'database': str(e)}
+        )
+
+
+# =============================================================================
 # API Key Management Endpoints
 # =============================================================================
 
