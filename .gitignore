@@ -1,0 +1,13 @@
+.github/
+.venv/
+__pycache__/
+backend/data/*
+.env
+.env.*local
+.DS_Store
+.vscode/
+.flaskenv
+data/*
+docs/*
+
+node_modules/
